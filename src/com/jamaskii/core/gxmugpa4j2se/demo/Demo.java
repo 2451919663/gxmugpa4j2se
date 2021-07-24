@@ -18,7 +18,7 @@ public class Demo {
         Scanner scanner=new Scanner(System.in);
         System.out.print("验证码：");
         String verifyCodeStr=scanner.nextLine();
-        Stream.login(verifyCode.cookie, "20195010791", "jw@023813", verifyCodeStr, new OnLoginDone() {
+        Stream.login(verifyCode.cookie, "username", "passwd", verifyCodeStr, new OnLoginDone() {
             @Override
             public void onLoginDone(String cookie, boolean success, String msg, List<String> terms) {
                 super.onLoginDone(cookie, success, msg, terms);
