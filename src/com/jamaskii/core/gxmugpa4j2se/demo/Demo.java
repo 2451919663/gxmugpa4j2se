@@ -8,6 +8,7 @@ import com.jamaskii.core.gxmugpa4j2se.structrue.VerifyCode;
 import com.jamaskii.core.utils.IOUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Demo {
@@ -18,7 +19,7 @@ public class Demo {
         Scanner scanner=new Scanner(System.in);
         System.out.print("验证码：");
         String verifyCodeStr=scanner.nextLine();
-        Stream.login(verifyCode.cookie, "20195010791", "jw@023813", verifyCodeStr, new OnLoginDone() {
+        Stream.login(verifyCode.cookie, "username", "passwd", verifyCodeStr, new OnLoginDone() {
             @Override
             public void onLoginDone(String cookie, boolean success, String msg, List<String> terms) {
                 super.onLoginDone(cookie, success, msg, terms);
@@ -32,6 +33,12 @@ public class Demo {
                     for (Subject subject:subjects
                          ) {
                         System.out.println(subject.toString());
+                    }
+                    System.out.println("GPA:"+Stream.calculateGPA(subjects,false));
+                    Map<String,String> detail=subjects.get(2).getDetail();
+                    for (Object key:detail.keySet().toArray()
+                         ) {
+                        System.out.println(key+detail.get((String)key));
                     }
                 }else{
                     IOUtils.println("登录失败："+msg+"\tCookie:"+cookie);

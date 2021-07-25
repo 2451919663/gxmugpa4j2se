@@ -154,25 +154,6 @@ public class Subject {
                 }
 
             }
-
-            /*String msg = "总成绩:"+datas.get(datas.size()-1);
-            if(heads.size()==datas.size()-1){
-                msg+="\n\n";
-                int j = 0;
-                while (j<heads.size())
-                {
-                    msg+=heads.get(j)+":"+datas.get(j);
-                    if(j!=datas.size()-2)
-                    {
-                        msg+="\n";
-                        if(j%2 != 0)
-                        {
-                            msg+="\n";
-                        }
-                    }
-                    j++;
-                }
-            }*/
             for(i=0;i<heads.size();i++){
                 detail.put(heads.get(i),datas.get(i));
             }

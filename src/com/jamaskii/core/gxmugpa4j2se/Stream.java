@@ -94,6 +94,7 @@ public class Stream {
     public static float calculateGPA(List<Subject> subjects, boolean failSubjectJoined){
         float num1=0;
         float num2=0;
+
         for (Subject subject:subjects
              ) {
             if(subject.type.equals("必修")){
