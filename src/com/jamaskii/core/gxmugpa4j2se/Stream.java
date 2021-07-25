@@ -1,6 +1,7 @@
 package com.jamaskii.core.gxmugpa4j2se;
 
 import com.jamaskii.core.gxmugpa4j2se.structrue.OnLoginDone;
+import com.jamaskii.core.gxmugpa4j2se.structrue.Subject;
 import com.jamaskii.core.utils.Base64Encoder;
 import com.jamaskii.core.utils.Net;
 import com.jamaskii.core.utils.Response;
@@ -88,6 +89,21 @@ public class Stream {
             e.printStackTrace();
         }
         return terms;
+    }
+
+    public static float calculateGPA(List<Subject> subjects, boolean failSubjectJoined){
+        float num1=0;
+        float num2=0;
+        for (Subject subject:subjects
+             ) {
+            if(subject.type.equals("必修")){
+                if(subject.point>0 || (subject.point<=0 && failSubjectJoined)){
+                    num1+=(subject.credit*subject.point);
+                    num2+=subject.credit;
+                }
+            }
+        }
+        return num1/num2;
     }
 
 }

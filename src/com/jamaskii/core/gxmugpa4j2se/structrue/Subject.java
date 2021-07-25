@@ -19,6 +19,8 @@ public class Subject {
     public String type;     //类型
     public String detail;   //学科分数构成
 
+    public String cookie;
+
     @Override
     public String toString(){
         return "["+this.type+"]"+this.name+"\t"+this.score+"\t"+this.credit+"\t"+this.point+"\t"+this.detail;
@@ -66,6 +68,7 @@ public class Subject {
                 Matcher matcherCell = patternCell.matcher(matcherRow.group(1));
                 int j=0;
                 Subject subject = new Subject();
+                subject.cookie=cookie;
                 while (matcherCell.find())//find every single info of subject.
                 {
                     switch (j)
@@ -107,6 +110,80 @@ public class Subject {
             }
         }catch(Exception e){}
         return subjects;
+    }
+
+    public static Map<String,String> getDetail(String cookie,Subject subject){
+        Map<String,String> detail=new HashMap<>();
+        try{
+            Map<String,String> headers=new HashMap<>();
+            headers.put("Host", "jw.gxmu.edu.cn");
+            headers.put("Upgrade-Insecure-Requests", "1");
+            headers.put("User-Agent", "Mozilla/5.0(WindowsNT10.0;Win64;x64;rv:77.0)Gecko/20100101Firefox/77.0");
+            headers.put("Cookie", cookie);
+            Response response=Net.get(subject.detail,headers);
+
+            Pattern pattern = Pattern.compile("序号</th>([\\s\\S]*?)<!--");
+            Matcher matcher= pattern.matcher(response.getText());
+            String target = "";
+            if (matcher.find())
+            {
+                target=matcher.group(1);
+            }
+
+            pattern = Pattern.compile("<th class=\"Nsb_r_list_thb\" style=\"width: 30px;\">(.+?)</th>");
+            matcher = pattern.matcher(target);
+            ArrayList<String> heads = new ArrayList<>();
+            while(matcher.find())
+            {
+                heads.add(matcher.group(1));
+            }
+
+            ArrayList<String> datas = new ArrayList<>();
+            pattern = Pattern.compile("<td>([\\s\\S]*?)</td>");
+            matcher = pattern.matcher(response.getText());
+            int i = 0;
+            while (matcher.find())
+            {
+                if(i==0)
+                {
+                    i++;
+                    continue;
+                }else
+                {
+                    datas.add(matcher.group(1));
+                }
+
+            }
+
+            /*String msg = "总成绩:"+datas.get(datas.size()-1);
+            if(heads.size()==datas.size()-1){
+                msg+="\n\n";
+                int j = 0;
+                while (j<heads.size())
+                {
+                    msg+=heads.get(j)+":"+datas.get(j);
+                    if(j!=datas.size()-2)
+                    {
+                        msg+="\n";
+                        if(j%2 != 0)
+                        {
+                            msg+="\n";
+                        }
+                    }
+                    j++;
+                }
+            }*/
+            for(i=0;i<heads.size();i++){
+                detail.put(heads.get(i),datas.get(i));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return detail;
+    }
+
+    public Map<String,String> getDetail(){
+        return Subject.getDetail(this.cookie,this);
     }
 
 }
